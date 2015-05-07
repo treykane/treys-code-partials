@@ -1,0 +1,28 @@
+<!----- Checkbox Selector Limit --------
+This prevents the user from selecting more than the set number of checkboxes in a web form. They will be prevented from selecting more and they will be alerted that they have selected the maximum number of items.  
+--------------------------------------- >
+
+
+<!---***---- JAVASCRIPT ----***--->
+
+<script type="text/javascript" language="javascript"> 
+    var itemCount=0 //set a baseline of zero
+    var maxItems=2 //can be changed to any limit
+    
+    function setItems(item){ 
+        if(item.checked)
+            {itemCount=itemCount+1}
+        else
+            {itemCount=itemCount-1} 
+        if (itemCount>maxItems)
+    {item.checked=false 
+        itemCount=itemCount-1 
+    alert('You may only choose '+maxItems+' conditions.') 
+  } 
+} 
+</script>
+
+
+<!----***--- FORM ITEM ---***---->
+
+<input id="" name="" type="checkbox" value="" onclick="setItems(this)"/>
