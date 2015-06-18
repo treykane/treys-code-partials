@@ -1,0 +1,5 @@
+//CLICK TOGGLE, CLICK AN ELEMENT, ANOTHER ELEMENT SLIDES UP, CLICK AGAIN IT GOES AWAY DIRECTION CAN BE CONTROLLED BY CSS IF THE ELEMENT IS SET TO "bottom: 0" IT WILL SLIDE UP IF SET TO "top: 0" IT WILL SLIDE DOWN, ETC
+
+$("#hero-text-button").click(function(){
+    $(".hero-text").slideToggle('slow'); 
+  });
