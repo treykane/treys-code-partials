@@ -1,0 +1,68 @@
+/*-----------------------------------------------------------------------------------------------------------------
+
+This is a basic CSS only Dropdown menu, just make sure your main nav container element uses the correct Class or ID
+
+------------------------------------------------------------------------------------------------------------------*/
+
+nav#menu {
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+#menu ul,
+#menu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#menu ul {
+  position: relative;
+  z-index: 597;
+}
+#menu ul li {
+  display: inline-block;
+  padding: 0  0 .5em 1em;
+  min-height: .5em;
+  vertical-align: middle;
+}
+#menu ul li.hover,
+#menu ul li:hover {
+  position: relative;
+  z-index: 599;
+  cursor: default;
+}
+#menu ul ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 598;
+  width: 100%;
+}
+#menu ul ul li {
+  float: none;
+  background-color: white;
+  padding: .5em;
+  width: 100%;
+}
+#menu ul ul ul {
+  top: 0;
+  left: 8em;
+}
+#menu ul li:hover > ul {
+  display: block;
+}
+#menu ul ul {
+  bottom: 0;
+  padding-left: 1em;
+}
+#menu ul ul {
+  margin-top: 0;
+}
+#menu ul ul li {
+  font-weight: normal;
+}
+#menu a {
+  display: block;
+  line-height: 1em;
+  text-decoration: none;
+}
