@@ -14,11 +14,21 @@ function signOffText() {
 add_shortcode('signoff', 'signOffText');
 
 
-
 // Wrapping ShortCode - Use would be [disclaimer] CONTENT GOES HERE [/disclaimer]
 function disclaimer( $atts, $content = null ) { 
     return '<p class="disclaimer-small">"'.$content.'"</p>';
 }
 add_shortcode("disclaimer", "disclaimer");
 
+
+// Wrapping Shortcode with Attributes 
+function button_yellow ( $atts, $content = null ) {
+    extract(shortcode_atts(array(
+      "href" => 'http://'
+    ), $atts));
+    return '<button class="button-yellow"><a href="'.$href.'">'.$content.'</a></button>';
+}
+add_shortcode("button", "button_yellow");
+
 ?>
+
