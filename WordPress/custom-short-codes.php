@@ -30,5 +30,13 @@ function button_yellow ( $atts, $content = null ) {
 }
 add_shortcode("button", "button_yellow");
 
+
+// Allow shortcodes to be parsed inside shortcodes.
+function column_row ( $atts, $content = null ) {  //ROW (RESPONSIVE)
+    return '<div class="row-r">'. do_shortcode( $content ).'</div>';
+}
+add_shortcode("row", "column_row");
+
+
 ?>
 
