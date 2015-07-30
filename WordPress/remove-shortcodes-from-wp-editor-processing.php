@@ -3,6 +3,6 @@
 
 
 remove_filter( 'the_content', 'wpautop' );//MOVE WPAUTOP TO RUN AFTER SHORTCODES ARE PROCESSED
-add_filter( 'the_content', 'wpautop' , 12);
+add_filter( 'the_content', 'wpautop' , 20);
 
 ?>
