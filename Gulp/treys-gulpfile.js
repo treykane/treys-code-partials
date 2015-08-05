@@ -18,7 +18,18 @@ var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
 var notify = require("gulp-notify");
 
-
+// Gulp-Notify Error Handler
+var onError = function(err) {
+  notify.onError({
+    title:    "Gulp",
+    subtitle: "Failure!",
+    message:  "Error: <%= error.message %>",
+    sound:    "Sosumi"
+  })(err);
+  
+  this.emit('end');// Reset Gulp Watch 
+};
+ 
 // Lint Task
 gulp.task('lint', function() {
     return gulp.src('js/*.js')
@@ -26,10 +37,24 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
+// Concatenate Specified Scripts, Minify JS, Source Map JS
+// Note: Sometimes the JS loading order matters, this is to keep control of that.
+gulp.task('scripts', function() {
+    return gulp.src(['js/navigation.js', 'js/customizer.js', 'js/skip-link-focus-fix.js'])
+        .pipe(plumber({errorHandler: onError}))
+        .pipe(sourcemaps.init())
+          .pipe(concat('all-scripts.js'))
+          .pipe(gulp.dest('js/min'))
+          .pipe(rename('all-scripts.min.js'))
+          .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('js/min'));
+});
+
 // Compile Sass, Generate Source Maps, Auto-Prefix, Minify CSS
 gulp.task('sass', function() {
-    return gulp.src(['sass/**/' + '*.scss', '!' + 'sass/**/' + '_*.scss']) // Do Not Compile Partials
-        .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>"), "sound": "Frog"}))
+    return gulp.src(['sass/**/' + '*.scss', '!' + 'sass/**/' + '_*.scss'])
+        .pipe(plumber({errorHandler: onError}))
         .pipe(sourcemaps.init())
           .pipe(sass())
           .pipe(autoprefixer({
@@ -41,20 +66,6 @@ gulp.task('sass', function() {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('.'));
 });
-
-// Concatenate Specified Scripts, Minify JS, Source Map JS
-// Note: Sometimes the JS loading order matters, this is to keep control of that.
-gulp.task('scripts', function() {
-    return gulp.src(['js/navigation.js', 'js/customizer.js', 'js/skip-link-focus-fix.js'])
-        .pipe(plumber(onError))
-        .pipe(sourcemaps.init())
-          .pipe(concat('all-scripts.js'))
-          .pipe(gulp.dest('js/min'))
-          .pipe(rename('all-scripts.min.js'))
-          .pipe(uglify())
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('js/min'));
-    });
 
 // Watch Files For Changes
 gulp.task('watch', function() {
