@@ -1,5 +1,5 @@
 // Install for Trey's Gulp file: 
-// npm install gulp-minify-css gulp-jshint gulp-sass gulp-concat gulp-uglify gulp-rename gulp-sourcemaps --save-dev
+// npm install gulp-minify-css gulp-jshint gulp-sass gulp-concat gulp-uglify gulp-rename gulp-sourcemaps gulp-autoprefixer --save-dev
 
 // Include gulp
 var gulp = require('gulp'); 
@@ -12,6 +12,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('gulp-autoprefixer');
 
 // Lint Task
 gulp.task('lint', function() {
@@ -20,11 +21,15 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-// Compile Sass, Generate Source Maps, Minify CSS
+// Compile Sass, Generate Source Maps, Auto-Prefix, Minify CSS
 gulp.task('sass', function() {
     return gulp.src('sass/*.scss')
         .pipe(sourcemaps.init())
           .pipe(sass())
+          .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+          }))
           .pipe(minifyCss())
           .pipe(rename('style.css'))
         .pipe(sourcemaps.write('.'))
