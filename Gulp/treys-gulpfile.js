@@ -1,5 +1,6 @@
 // Install for Trey's Gulp file: 
-// npm install gulp-minify-css gulp-jshint gulp-sass gulp-concat gulp-uglify gulp-rename gulp-sourcemaps gulp-autoprefixer --save-dev
+// npm install gulp 
+// npm install gulp-util gulp-minify-css gulp-jshint gulp-sass gulp-concat gulp-uglify gulp-rename gulp-sourcemaps gulp-autoprefixer gulp-plumber gulp-notify --save-dev
 
 // Include gulp
 var gulp = require('gulp'); 
@@ -13,6 +14,10 @@ var rename = require('gulp-rename');
 var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
+var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
+var notify = require("gulp-notify");
+
 
 // Lint Task
 gulp.task('lint', function() {
@@ -23,15 +28,16 @@ gulp.task('lint', function() {
 
 // Compile Sass, Generate Source Maps, Auto-Prefix, Minify CSS
 gulp.task('sass', function() {
-    return gulp.src('sass/*.scss')
+    return gulp.src(['sass/**/' + '*.scss', '!' + 'sass/**/' + '_*.scss']) // Do Not Compile Partials
+        .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>"), "sound": "Frog"}))
         .pipe(sourcemaps.init())
           .pipe(sass())
           .pipe(autoprefixer({
             browsers: ['last 2 versions'],
-            cascade: false
-          }))
+            cascade: false }))
           .pipe(minifyCss())
           .pipe(rename('style.css'))
+          .pipe(notify("Compiled SASS"))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('.'));
 });
@@ -40,6 +46,7 @@ gulp.task('sass', function() {
 // Note: Sometimes the JS loading order matters, this is to keep control of that.
 gulp.task('scripts', function() {
     return gulp.src(['js/navigation.js', 'js/customizer.js', 'js/skip-link-focus-fix.js'])
+        .pipe(plumber(onError))
         .pipe(sourcemaps.init())
           .pipe(concat('all-scripts.js'))
           .pipe(gulp.dest('js/min'))
@@ -51,8 +58,8 @@ gulp.task('scripts', function() {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    gulp.watch('js/*.js', ['lint', 'scripts']);
-    gulp.watch('sass/*.scss', ['sass']);
+    gulp.watch('js/**/*.js', ['lint', 'scripts']);
+    gulp.watch('sass/**/*.scss', ['sass']);
 });
 
 // Default Task
