@@ -22,8 +22,8 @@ var notify = require("gulp-notify");
 var onError = function(err) {
   notify.onError({
     title:    "Gulp",
-    subtitle: "Failure!",
-    message:  "Error: <%= error.message %>",
+    subtitle: "Error:",
+    message:  "<%= error.message %>",
     sound:    "Sosumi"
   })(err);
   
@@ -40,7 +40,9 @@ gulp.task('lint', function() {
 // Concatenate Specified Scripts, Minify JS, Source Map JS
 // Note: Sometimes the JS loading order matters, this is to keep control of that.
 gulp.task('scripts', function() {
-    return gulp.src(['js/navigation.js', 'js/customizer.js', 'js/skip-link-focus-fix.js'])
+    return gulp.src(['js/navigation.js', 
+                     'js/customizer.js', 
+                     'js/skip-link-focus-fix.js'])
         .pipe(plumber({errorHandler: onError}))
         .pipe(sourcemaps.init())
           .pipe(concat('all-scripts.js'))
@@ -69,7 +71,8 @@ gulp.task('sass', function() {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    gulp.watch('js/**/*.js', ['lint', 'scripts']);
+    gulp.watch('js/*.js', ['lint']);
+    gulp.watch(['js/**/*.js', '!js/min/*.js'], ['scripts']);
     gulp.watch('sass/**/*.scss', ['sass']);
 });
 
